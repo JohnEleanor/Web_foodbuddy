@@ -6,7 +6,6 @@ import liff from "@line/liff";
 import { useEffect } from "react";
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-// import { useRouter } from 'next/router'
 
 // ? Components
 import { Button } from "@/components/ui/button";
@@ -21,7 +20,6 @@ import LoginImage from "./assets/login_img.png";
 const initLiff = async () => {
   try {
     if (!process.env.NEXT_PUBLIC_LINE_LIFF_ID) {
-      // console.log("ENV is not defined");
       throw new Error("LIFF ID is not defined");
     }
 
@@ -44,7 +42,7 @@ export default function Home() {
     } else {
       const userProfile = await liff.getProfile() // pass the user's ID to your backend server
       console.log(userProfile); 
-      router.push( '/dashboard', {
+      router.push( '/register', {
         scroll : false
       })
     }
