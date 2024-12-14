@@ -3,37 +3,43 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 
 const lifestyleOptions = [
   {
-    value: "sedentary",
+    value: "ไม่ออกกำลังกาย",
     label: "ไม่ออกกำลังกาย / ทำงานนั่งโต๊ะ",
     icon: "👤",
   },
   {
-    value: "light",
+    value: "ออกกำลังกายเบาๆ",
     label: "ออกกำลังกายเบาๆ",
     sublabel: "(3-5 ครั้งต่อสัปดาห์)",
     icon: "💪",
   },
   {
-    value: "moderate",
+    value: "ออกกำลังกาย",
     label: "ออกกำลังกาย",
     sublabel: "(3-5 ครั้งต่อสัปดาห์)",
     icon: "🏃",
   },
   {
-    value: "active",
-    label: "ออกกำลังกาย",
+    value: "ออกกำลังกายเป็นประจำ",
+    label: "ออกกำลังกายเป็นประจำ",
     sublabel: "(6-7 ครั้งต่อสัปดาห์)",
     icon: "🏋️",
   },
   {
-    value: "intense",
-    label: "ออกกำลังกายหนักวัน",
+    value: "ออกกำลังกายหนัก",
+    label: "ออกกำลังกายหนัก",
     sublabel: "(วันละ 2 ช่วง)",
     icon: "💪",
   },
 ]
+interface TargetStepProps {
+  formData: any;
+  updateFormData: (data: any) => void;
+  errors: any;
+}
 
-export function LifestyleStep({ formData, updateFormData, errors }) {
+
+export function LifestyleStep({ formData, updateFormData, errors } : TargetStepProps) {
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold mb-6">คุณมีไลฟ์สไตล์แบบใด</h2>
@@ -55,7 +61,7 @@ export function LifestyleStep({ formData, updateFormData, errors }) {
             }`}
           >
             <RadioGroupItem value={option.value} className="sr-only" />
-            <span className="text-2xl">{option.icon}</span>
+            <span className="text-2xl rounded-full bg-primary p-2">{option.icon}</span>
             <div className="flex-1">
               <p className="font-medium">{option.label}</p>
               {option.sublabel && (

@@ -5,7 +5,13 @@ import { DatePicker } from "@/components/ui/date-picker";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 
-export function PersonalInfoStep({ formData, updateFormData, errors }) {
+interface PersonalInfoStepProps {
+  formData: any;
+  updateFormData: (data: any) => void;
+  errors: any;
+}
+
+export function PersonalInfoStep({ formData, updateFormData, errors }: PersonalInfoStepProps) {
   const [bmi, setBmi] = useState(0);
 
   const handleDateChange = (date: Date | null) => {

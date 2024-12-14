@@ -3,7 +3,13 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 
-export function FavoriteIngredientsStep({ formData, updateFormData, errors }) {
+interface FavoriteIngredientsStepProps {
+  formData: any
+  updateFormData: (data: any) => void
+  errors: any
+}
+
+export function FavoriteIngredientsStep({ formData, updateFormData, errors } : FavoriteIngredientsStepProps) {
   const [ingredient, setIngredient] = useState("")
 
   const handleAddIngredient = () => {
@@ -38,7 +44,7 @@ export function FavoriteIngredientsStep({ formData, updateFormData, errors }) {
       <div>
         <h3 className="font-semibold mb-2">Your Favorite Ingredients:</h3>
         <ul className="list-disc list-inside">
-          {formData.favoriteIngredients.map((item) => (
+          {formData.favoriteIngredients.map((item : string) => (
             <li key={item} className="flex justify-between items-center">
               {item}
               <Button variant="ghost" size="sm" onClick={() => handleRemoveIngredient(item)}>

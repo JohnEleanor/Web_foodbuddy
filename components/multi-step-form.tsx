@@ -10,10 +10,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { PersonalInfoStep } from "@/components/form-steps/personal-info-step";
-// import { DietaryPreferencesStep } from "@/components/form-steps/dietary-preferences-step";
+import { targetStep } from "@/components/form-steps/target-step";
 import { FavoriteIngredientsStep } from "@/components/form-steps/favorite-ingredients-step";
 import { SubmissionStep } from "@/components/form-steps/submission-step";
 import { LifestyleStep } from "@/components/form-steps/lifestyle-step";
+import { targetWeightStep } from "@/components/form-steps/targetWeight-step";
 import {
   Dialog,
   DialogContent,
@@ -29,8 +30,9 @@ import { useToast } from "@/hooks/use-toast";
 const steps = [
   { title: "ข้อมูลส่วนตัว", component: PersonalInfoStep }, // case 0
   { title: "ไลฟ์สไตล์", component: LifestyleStep }, // case 1
-  { title: "วัตถุดิบที่ชื่นชอบ", component: FavoriteIngredientsStep }, // case 2
-  { title: "ยืนยันข้อมูล", component: SubmissionStep }, // case 3
+  { title: "เป้าหมาย" , component: targetStep}, // case 2
+  { title: "เป้าหมายน้ำหนัก" , component: targetWeightStep}, // case 3
+  { title: "ยืนยันข้อมูล", component: SubmissionStep }, // case 4
 ];
 
 export function MultiStepForm() {
@@ -41,10 +43,12 @@ export function MultiStepForm() {
   const [formData, setFormData] = useState({
     name: "",
     age: "",
-    weight: 0,
-    height: 0,
+    weight: "",
+    height: "",
     bmi: 0,
     lifestyle: "",
+    target: "",
+    target_weight : "",
     dietaryPreferences: [],
     favoriteIngredients: [],
   });
@@ -82,26 +86,26 @@ export function MultiStepForm() {
 
   const validateStep = (step: number, data: typeof formData) => {
     const stepErrors: Record<string, string> = {};
+    console.log("step", step);
     switch (step) {
       case 0: // Personal Info
         if (!data.name.trim()) stepErrors.name = "กรุณาใส่ชื่อของคุณ";
-
         if (isNaN(Number(data.age)) || Number(data.age) == 0)
           stepErrors.age = "กรุณาใส่อายุของคุณ";
-
         if (isNaN(Number(data.weight)) || Number(data.weight) == 0)
           stepErrors.weight = "กรุณาใส่น้ำหนักของคุณ";
         if (isNaN(Number(data.height)) || Number(data.height) == 0)
           stepErrors.height = "กรุณาใส่ส่วนสูงของคุณ";
-
         break;
-      case 1: // Dietary Preferences
+      case 1: 
         if (!data.lifestyle) stepErrors.lifestyle = "กรุณาเลือกไลฟ์สไตล์ของคุณ";
-        // if (data.dietaryPreferences.length === 0) stepErrors.dietaryPreferences = "Please select at least one dietary preference"
+       
         break;
-      case 2: // Favorite Ingredients
-        if (data.favoriteIngredients.length === 0)
-          stepErrors.favoriteIngredients = "Please add at least one favorite ingredient";
+      case 2:
+        if (!data.target) stepErrors.target = "กรุณาเลือกเป้าหมายของคุณ";
+        break;
+      case 3:
+        if (!data.target_weight) stepErrors.target_weight = "กรุณาเลือกเป้าหมายของคุณ"
         break;
     }
     return stepErrors;

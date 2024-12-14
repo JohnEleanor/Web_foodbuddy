@@ -1,4 +1,4 @@
-import { ReactElement, JSXElementConstructor, ReactNode, AwaitedReactNode, Key } from "react"
+
 
 export function SubmissionStep({ formData }: { formData: any }) {
   const getLifestyleLabel = (value: keyof typeof lifestyleMap) => {
@@ -12,6 +12,15 @@ export function SubmissionStep({ formData }: { formData: any }) {
     return lifestyleMap[value] || value
   }
 
+  const getTargetLabel = (value: keyof typeof targetMap) => { 
+    const targetMap: { [key in 'balance-weight' | 'gain-weight' | 'lose-weight']: string } = {
+      "balance-weight": "ฉันต้องการรักษาน้ำหนักเท่าเดิม",
+      "gain-weight": "ฉันต้องการเพิ่มน้ำหนัก",
+      "lose-weight": "ฉันต้องการลดน้ำหนัก",
+    }
+    return targetMap[value] || value
+  }
+
   return (
     <div className="space-y-4">
       <h3 className="font-semibold">ตรวจสอบข้อมูลของคุณ</h3>
@@ -21,7 +30,10 @@ export function SubmissionStep({ formData }: { formData: any }) {
         <p><strong>น้ำหนัก :</strong> {formData.weight} กิโลกรัม</p>
         <p><strong>ส่วนสูง :</strong> {formData.height} เซนติเมตร</p>
         <p><strong>BMI :</strong> {formData.bmi}</p>
+        <p><strong>เป้าหมาย :</strong> {getTargetLabel(formData.target)}</p>
         <p><strong>ไลฟ์สไตล์ :</strong> {getLifestyleLabel(formData.lifestyle)}</p>
+        <p><strong>เป้าหมายน้ำหนัก :</strong> {formData.target_weight} กิโลกรัม</p>
+
       </div>
       
       <div>

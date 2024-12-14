@@ -10,12 +10,16 @@ const dietaryOptions = [
   "Paleo",
   "Low-carb",
 ]
-
-export function DietaryPreferencesStep({ formData, updateFormData, errors }) {
+interface DietaryPreferencesStepProps {
+  formData: any
+  updateFormData: (data: any) => void
+  errors: any
+}
+export function DietaryPreferencesStep({ formData, updateFormData, errors }: DietaryPreferencesStepProps) {
   
   const handleCheckboxChange = (option: string) => {
     const updatedPreferences = formData.dietaryPreferences.includes(option)
-      ? formData.dietaryPreferences.filter((item) => item !== option)
+      ? formData.dietaryPreferences.filter((item: string) => item !== option)
       : [...formData.dietaryPreferences, option]
     updateFormData({ dietaryPreferences: updatedPreferences })
   }
