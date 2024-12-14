@@ -49,7 +49,7 @@ export function PersonalInfoStep({ formData, updateFormData, errors }) {
   return (
     <div className="space-y-4">
       <div>
-        <Label htmlFor="name">ชื่อ</Label>
+        <Label >ชื่อ</Label>
         <Input
           id="name"
           value={formData.name}
@@ -60,7 +60,7 @@ export function PersonalInfoStep({ formData, updateFormData, errors }) {
       </div>
 
       <div>
-        <Label htmlFor="dateOfBirth">วันเกิด</Label>
+        <Label >วันเกิด</Label>
         <div className="flex flex-col">
           <DatePicker onChange={handleDateChange} />
         </div>
@@ -68,7 +68,7 @@ export function PersonalInfoStep({ formData, updateFormData, errors }) {
       </div>
 
       <div>
-        <Label htmlFor="age">อายุ</Label>
+        <Label >อายุ</Label>
         <Input
           id="age"
           type="number"
@@ -80,7 +80,7 @@ export function PersonalInfoStep({ formData, updateFormData, errors }) {
       </div>
 
       <div>
-        <Label htmlFor="weight">น้ำหนัก</Label>
+        <Label >น้ำหนัก</Label>
         <Input
           id="weight"
           type="number"
