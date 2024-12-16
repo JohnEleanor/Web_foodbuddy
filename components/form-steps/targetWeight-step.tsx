@@ -127,7 +127,7 @@ export function targetWeightStep({
                     variant="outline"
                     size="icon"
                     className="h-8 w-8 shrink-0 rounded-full"
-                    onClick={() => onClick(-10)}
+                    onClick={() => onClick(-1)}
                     disabled={goal <= 30} // disable ปุ่มหาก goal น้อยกว่าหรือเท่ากับ 200
                   >
                     <Minus />
@@ -145,7 +145,7 @@ export function targetWeightStep({
                     variant="outline"
                     size="icon"
                     className="h-8 w-8 shrink-0 rounded-full"
-                    onClick={() => onClick(10)}
+                    onClick={() => onClick(1)}
                     disabled={goal >= roundToNextTen(formData.weight + 30)}
                   >
                     <Plus />
@@ -169,7 +169,7 @@ export function targetWeightStep({
                 </div>
               </div>
               <DrawerFooter>
-                <Button>ยืนยัน</Button>
+                <Button onClick={() => updateFormData({ target_weight: goal })}>ยืนยัน</Button>
                 <DrawerClose asChild>
                   <Button variant="outline">ปิด</Button>
                 </DrawerClose>

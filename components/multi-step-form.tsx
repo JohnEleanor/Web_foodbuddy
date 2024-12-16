@@ -11,10 +11,11 @@ import {
 } from "@/components/ui/card";
 import { PersonalInfoStep } from "@/components/form-steps/personal-info-step";
 import { targetStep } from "@/components/form-steps/target-step";
-import { FavoriteIngredientsStep } from "@/components/form-steps/favorite-ingredients-step";
+import { DiseaseStep } from "@/components/form-steps/disease-step";
 import { SubmissionStep } from "@/components/form-steps/submission-step";
 import { LifestyleStep } from "@/components/form-steps/lifestyle-step";
 import { targetWeightStep } from "@/components/form-steps/targetWeight-step";
+import { foodAllery } from "@/components/form-steps/food-allery";
 import {
   Dialog,
   DialogContent,
@@ -32,6 +33,8 @@ const steps = [
   { title: "ไลฟ์สไตล์", component: LifestyleStep }, // case 1
   { title: "เป้าหมาย" , component: targetStep}, // case 2
   { title: "เป้าหมายน้ำหนัก" , component: targetWeightStep}, // case 3
+  { title: "โรคประจำตัว", component: DiseaseStep }, // case 4
+  { title: "อาหารที่เเพ้อื่นๆ", component: foodAllery }, // case 5
   { title: "ยืนยันข้อมูล", component: SubmissionStep }, // case 4
 ];
 
@@ -45,12 +48,20 @@ export function MultiStepForm() {
     age: "",
     weight: "",
     height: "",
+    gender : "",
     bmi: 0,
+
     lifestyle: "",
+
     target: "",
     target_weight : "",
-    dietaryPreferences: [],
-    favoriteIngredients: [],
+    
+
+    disease : [],
+    disease_other : "",
+
+    foodallery : [],
+    foodallery_other : ""
   });
   const [errors, setErrors] = useState({});
 
@@ -106,6 +117,8 @@ export function MultiStepForm() {
         break;
       case 3:
         if (!data.target_weight) stepErrors.target_weight = "กรุณาเลือกเป้าหมายของคุณ"
+      case 4:
+        if (!data.disease) stepErrors.disease = "กรุณาเลือกโรคประจำตัวของคุณ";
         break;
     }
     return stepErrors;
@@ -164,7 +177,7 @@ export function MultiStepForm() {
       </Card>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent>
+        <DialogContent >
           <DialogHeader>
             <DialogTitle>ยืนยันข้อมูล</DialogTitle>
             <DialogDescription>

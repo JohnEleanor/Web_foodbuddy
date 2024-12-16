@@ -4,6 +4,13 @@ import { Label } from "@/components/ui/label";
 import { DatePicker } from "@/components/ui/date-picker";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 interface PersonalInfoStepProps {
   formData: any;
@@ -107,6 +114,18 @@ export function PersonalInfoStep({ formData, updateFormData, errors }: PersonalI
           placeholder="กรุณาใส่ส่วนสูงของคุณ"
         />
         {errors.height && <p className="text-red-500 text-sm mt-1">{errors.height}</p>}
+      </div>
+      <div>
+        <Label >เพศ</Label>
+        <Select onValueChange={(value) => updateFormData({gender : value})} value={formData.gender}>
+          <SelectTrigger className="w-[200px]">
+            <SelectValue placeholder="กรุณาเลือกเพศ" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="male">ชาย</SelectItem>
+            <SelectItem value="female">หญิง</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
 
       <div>
