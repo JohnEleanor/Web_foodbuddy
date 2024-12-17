@@ -11,6 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { error } from "console";
 
 interface PersonalInfoStepProps {
   formData: any;
@@ -126,6 +127,7 @@ export function PersonalInfoStep({ formData, updateFormData, errors }: PersonalI
             <SelectItem value="female">หญิง</SelectItem>
           </SelectContent>
         </Select>
+        {errors.gender && <p className="text-red-500 text-sm mt-1">{errors.gender}</p>}
       </div>
 
       <div>
@@ -139,6 +141,8 @@ export function PersonalInfoStep({ formData, updateFormData, errors }: PersonalI
               type="number"
               value={formData.bmi}
               className="hidden"
+              onChange={(e) => updateFormData({ bmi: parseFloat(e.target.value) })}
+              readOnly
             />
           </AlertDescription>
         </Alert>

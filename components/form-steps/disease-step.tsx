@@ -21,6 +21,7 @@ export function DiseaseStep({ formData, updateFormData, errors }: DiseaseStep) {
     const updatedPreferences = formData.disease.includes(option)
       ? formData.disease.filter((item: string) => item !== option)
       : [...formData.disease, option]
+    console.log(updatedPreferences)
     updateFormData({ disease: updatedPreferences })
   }
 
@@ -32,6 +33,7 @@ export function DiseaseStep({ formData, updateFormData, errors }: DiseaseStep) {
             id={option}
             checked={formData.disease.includes(option)}
             onCheckedChange={() => handleCheckboxChange(option)}
+            required
           />
           <Label htmlFor={option}>{option}</Label>
         </div>

@@ -27,7 +27,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-
+import { useRouter } from 'next/navigation';
 const steps = [
   { title: "ข้อมูลส่วนตัว", component: PersonalInfoStep }, // case 0
   { title: "ไลฟ์สไตล์", component: LifestyleStep }, // case 1
@@ -39,27 +39,35 @@ const steps = [
 ];
 
 export function MultiStepForm() {
+  const router = useRouter();
+  const userData = localStorage.getItem("Jay:userData");
+  if (!userData) {
+    console.error("No user data found in local storage");
+    router.push('/');
+    return null;
+  }
+  const decodeUserData = JSON.parse(userData || "Why you so bad ass");
+  console.log(decodeUserData.userId)
+
   const { toast } = useToast();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({
+    userId: decodeUserData.userId,
+    pictureUrl :decodeUserData.pictureUrl,
+    displayName : decodeUserData.displayName,
     name: "",
     age: "",
     weight: "",
     height: "",
     gender : "",
     bmi: 0,
-
     lifestyle: "",
-
     target: "",
     target_weight : "",
-    
-
     disease : [],
     disease_other : "",
-
     foodallery : [],
     foodallery_other : ""
   });
@@ -67,9 +75,6 @@ export function MultiStepForm() {
 
   const CurrentStepComponent = steps[currentStep].component;
 
-  useEffect(() => {
-    console.log("formData", formData);
-  }, [formData]);
   const handleNext = () => {
     const stepErrors = validateStep(currentStep, formData);
     if (Object.keys(stepErrors).length === 0) {
@@ -107,18 +112,22 @@ export function MultiStepForm() {
           stepErrors.weight = "กรุณาใส่น้ำหนักของคุณ";
         if (isNaN(Number(data.height)) || Number(data.height) == 0)
           stepErrors.height = "กรุณาใส่ส่วนสูงของคุณ";
+        if (!data.gender.trim()) stepErrors.gender = "กรุณาเลือกเพศของคุณ";
         break;
       case 1: 
         if (!data.lifestyle) stepErrors.lifestyle = "กรุณาเลือกไลฟ์สไตล์ของคุณ";
-       
         break;
       case 2:
         if (!data.target) stepErrors.target = "กรุณาเลือกเป้าหมายของคุณ";
         break;
       case 3:
         if (!data.target_weight) stepErrors.target_weight = "กรุณาเลือกเป้าหมายของคุณ"
+        break;
       case 4:
-        if (!data.disease) stepErrors.disease = "กรุณาเลือกโรคประจำตัวของคุณ";
+        if (data.disease.length <= 0) stepErrors.disease = "กรุณาเลือกโรคประจำตัวของคุณ";
+        break;
+      case 5:
+        if (data.foodallery.length <= 0) stepErrors.foodallery = "กรุณาเลือกอาหารที่เเพ้อื่นๆของคุณ";
         break;
     }
     return stepErrors;
@@ -129,7 +138,10 @@ export function MultiStepForm() {
       setIsDialogOpen(false);
       toast({
         title: "ข้อมูลถูกบันทึกเรียบร้อยแล้ว",
-        description: "กำลังนำคุณไปยังหน้า Dashboard",
+        description: 
+        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+          <code className="text-white">{JSON.stringify(formData, null, 2)}</code>
+        </pre>,
       });
       console.log(formData);
       // router.push("/dashboard")
@@ -237,3 +249,8 @@ function ProgressIndicator({
     </div>
   );
 }
+
+
+
+import React from 'react'
+

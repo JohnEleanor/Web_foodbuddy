@@ -3,9 +3,9 @@
 // ? Libraries
 import Image from "next/image";
 import liff from "@line/liff";
-import { useEffect } from "react";
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect } from "react";
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 // ? Components
 import { Button } from "@/components/ui/button";
@@ -14,8 +14,9 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 // ? Image assets
 import LoginImage from "./assets/login_img.png";
 
-// ? Pages
+import { Loader2 } from "lucide-react"
 
+// ? Pages
 
 const initLiff = async () => {
   try {
@@ -32,27 +33,40 @@ const initLiff = async () => {
   }
 };
 
-
-
 export default function Home() {
-  const router = useRouter()
-  const handdleLogin = async () => {  
-    if (!liff.isLoggedIn()) {
-      liff.login();
-    } else {
-      const userProfile = await liff.getProfile() // pass the user's ID to your backend server
-      console.log(userProfile); 
-      router.push( '/register', {
-        scroll : false
-      })
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false); // State สำหรับการโหลด
+
+  const handdleLogin = async () => {
+    setIsLoading(true);  // เริ่มการโหลด
+
+    try {
+      if (!liff.isLoggedIn()) {
+        liff.login();
+      } else {
+        const userProfile = await liff.getProfile(); // pass the user's ID to your backend server
+        // console.log(userProfile);
+        // const { userId, displayName, pictureUrl } = userProfile;
+        // const dataEncode = { userId, displayName, pictureUrl }; 
+        const encodedData = JSON.stringify(userProfile.pictureUrl);
+        localStorage.setItem("Jay:userData", encodedData);
+        // ส่งข้อมูลไปที่หน้า /register
+        router.push('/register');
+      }
+    } catch (error) {
+      console.error("Login failed:", error);
+    } finally {
+      setTimeout(() => {
+        
+        setIsLoading(false); // การโหลดเสร็จสิ้น
+      }, 5000);
     }
-  }
+  };
 
   useEffect(() => {
     initLiff();
   }, []);
 
-  
   return (
     <>
       <div className="w-full lg:min-h-[1366px] lg:grid lg:grid-cols-2 xl:min-h-[980px]">
@@ -71,9 +85,16 @@ export default function Home() {
               <Button
                 type="button"
                 onClick={handdleLogin}
-                className="bg-lime-600 w-full shadow-lg hover:bg-lime-500"
+                className={`w-full shadow-lg ${isLoading ? 'bg-gray-400 cursor-not-allowed' : 'bg-lime-600 hover:bg-lime-500'}`}
+                disabled={isLoading} // ปิดปุ่มเมื่อกำลังโหลด
               >
-                Login ด้วย Line Account
+                {isLoading ? (
+                 
+                    <div className="flex gap-2"><Loader2 className="animate-spin" /> กรุณารอสักครู่...</div>
+                  
+                ) : (
+                  "Login ด้วย Line Account"
+                )}
               </Button>
             </div>
           </div>
