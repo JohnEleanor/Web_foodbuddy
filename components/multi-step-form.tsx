@@ -23,7 +23,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "./ui/dialog";
+} from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
@@ -38,25 +38,26 @@ const steps = [
   { title: "ยืนยันข้อมูล", component: SubmissionStep }, // case 4
 ];
 
+interface UserData {
+  userId: string;
+  displayName: string;
+  pictureUrl: string;
+}
+
+
 export function MultiStepForm() {
   const router = useRouter();
-  const userData = localStorage.getItem("Jay:userData");
-  if (!userData) {
-    console.error("No user data found in local storage");
-    router.push('/');
-    return null;
-  }
-  const decodeUserData = JSON.parse(userData || "Why you so bad ass");
-  console.log(decodeUserData.userId)
+  // const [userData, setUserData] = useState<UserData | null>(null);
+
 
   const { toast } = useToast();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({
-    userId: decodeUserData.userId,
-    pictureUrl :decodeUserData.pictureUrl,
-    displayName : decodeUserData.displayName,
+    userId: "",
+    pictureUrl: "",
+    displayName: "",
     name: "",
     age: "",
     weight: "",
@@ -69,8 +70,24 @@ export function MultiStepForm() {
     disease : [],
     disease_other : "",
     foodallery : [],
-    foodallery_other : ""
+    foodallery_other : "",
+    dailyCalories : 0
   });
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedData = localStorage.getItem("Jay:userData");
+      const decodeData = storedData ? JSON.parse(storedData) : null;
+      setFormData({ ...formData, userId: decodeData?.userId, pictureUrl: decodeData?.pictureUrl, displayName: decodeData?.displayName });
+
+      if (!storedData) {
+        console.error("No user data found in local storage");
+        router.push("/");
+      }
+    }
+  }, [router]);
+
+  
   const [errors, setErrors] = useState({});
 
   const CurrentStepComponent = steps[currentStep].component;
@@ -102,7 +119,7 @@ export function MultiStepForm() {
 
   const validateStep = (step: number, data: typeof formData) => {
     const stepErrors: Record<string, string> = {};
-    console.log("step", step);
+    // console.log("step", step);
     switch (step) {
       case 0: // Personal Info
         if (!data.name.trim()) stepErrors.name = "กรุณาใส่ชื่อของคุณ";
@@ -133,18 +150,64 @@ export function MultiStepForm() {
     return stepErrors;
   };
 
-  const handleConfirm = () => {
+  const fetchData = async () => {
+    console.log(formData);
+    try {
+      const response = await fetch(`/api/users`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userName : formData.name,
+          age : formData.age,
+          weight : formData.weight,
+          height : formData.height,
+          gender : formData.gender,
+          bmi : formData.bmi,
+          lifestyle : formData.lifestyle,
+          target : formData.target,
+          targetWeight : formData.target_weight,
+          disease : formData.disease,
+          userFoodAllery : formData.foodallery,
+          displayName : formData.displayName,
+          lineUserId : formData.userId,
+          pictureUrl : formData.pictureUrl
+        }),
+      });
+      const data = await response.json();
+      console.log("Data saved successfully:", data);
+      return data;
+    } catch (error) {
+      console.error("Failed to save data:", error);
+      return null;
+    }
+  }
+
+  const handleConfirm = async () => {
     if (termsAccepted) {
       setIsDialogOpen(false);
-      toast({
-        title: "ข้อมูลถูกบันทึกเรียบร้อยแล้ว",
-        description: 
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(formData, null, 2)}</code>
-        </pre>,
-      });
-      console.log(formData);
-      // router.push("/dashboard")
+      // toast({
+      //   title: "ข้อมูลถูกบันทึกเรียบร้อยแล้ว",
+      //   description: 
+      //   <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+      //     <code className="text-white">{JSON.stringify(formData, null, 2)}</code>
+      //   </pre>,
+      // });
+      // console.log(formData);
+
+      const result = await fetchData();
+      if (result.status == 200) {
+        toast({title: "บันทึกข้อมูลสำเร็จ", description: "ข้อมูลของคุณถูกบันทึกเรียบร้อยแล้วเรากำลังพาคุณไปยังหน้า Dashboard"});
+        router.push("/dashboard")
+      }else {
+        toast({
+          title: "เกิดข้อผิดพลาดในการบันทึกข้อมูล",
+          description : "กรุณาลองใหม่อีกครั้ง",
+        })
+      }
+
+      // 
     } else {
       toast({
         title: "กรุณายอมรับข้อกำหนดและเงื่อนไข",
@@ -153,6 +216,8 @@ export function MultiStepForm() {
       });
     }
   };
+
+
 
   return (
     <>
@@ -252,5 +317,4 @@ function ProgressIndicator({
 
 
 
-import React from 'react'
 

@@ -21,7 +21,7 @@ export function DiseaseStep({ formData, updateFormData, errors }: DiseaseStep) {
     const updatedPreferences = formData.disease.includes(option)
       ? formData.disease.filter((item: string) => item !== option)
       : [...formData.disease, option]
-    console.log(updatedPreferences)
+    // console.log(updatedPreferences)
     updateFormData({ disease: updatedPreferences })
   }
 

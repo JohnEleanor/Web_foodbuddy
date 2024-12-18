@@ -38,30 +38,29 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false); // State สำหรับการโหลด
 
   const handdleLogin = async () => {
-    setIsLoading(true);  // เริ่มการโหลด
+    setIsLoading(true); // เริ่มการโหลด
 
     try {
       if (!liff.isLoggedIn()) {
         liff.login();
       } else {
-        const userProfile = await liff.getProfile(); // pass the user's ID to your backend server
-        // console.log(userProfile);
-        // const { userId, displayName, pictureUrl } = userProfile;
-        // const dataEncode = { userId, displayName, pictureUrl }; 
-        const encodedData = JSON.stringify(userProfile.pictureUrl);
+        const userProfile = await liff.getProfile(); // รอจนกว่าจะได้ข้อมูล
+        const encodedData = JSON.stringify(userProfile);
         localStorage.setItem("Jay:userData", encodedData);
-        // ส่งข้อมูลไปที่หน้า /register
-        router.push('/register');
+        
+        
       }
     } catch (error) {
       console.error("Login failed:", error);
     } finally {
-      setTimeout(() => {
-        
-        setIsLoading(false); // การโหลดเสร็จสิ้น
-      }, 5000);
+      setTimeout(() =>{
+        setIsLoading(false); // การโหลดเสร็จสิ้นเมื่อทุกอย่างเสร็จสมบูรณ์
+      },1000)
+      // ส่งข้อมูลไปที่หน้า /register
+      router.push('/register');
     }
-  };
+};
+
 
   useEffect(() => {
     initLiff();

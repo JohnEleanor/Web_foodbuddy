@@ -1,4 +1,4 @@
-"use client"; // Marks this as a client-side component
+"use client"; 
 
 import { MultiStepForm } from "@/components/multi-step-form";
 

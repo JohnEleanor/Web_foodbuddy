@@ -1,4 +1,10 @@
-export function SubmissionStep({ formData }: { formData: any }) {
+interface submission {
+  formData: any;
+  updateFormData: (data: any) => void;
+  errors: any;
+}
+
+export function SubmissionStep({ formData, updateFormData, errors }: submission) {
   const { age, weight, height, gender, lifestyle, target } = formData;
 
   const getLifestyleLabel = (value: keyof typeof lifestyleMap) => {
@@ -67,7 +73,7 @@ export function SubmissionStep({ formData }: { formData: any }) {
     } else if (target === "เพิ่มน้ำหนัก") {
       calories += 500; // Add 500 calories to gain weight (1 lb per week)
     }
-
+    
     return calories;
   }
 
