@@ -32,7 +32,7 @@ export async function POST(request : Request) {
       (user_name, user_age, user_weight, user_height, user_gender, 
        user_bmi, user_lifestyle, user_target, user_targetweight, 
        user_disease, user_foodallery, user_displayName, 
-       user_lineId, user_pictureUrl,dailyCalories) 
+       user_lineId, user_pictureUrl,user_dailycalories) 
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
@@ -54,4 +54,10 @@ export async function POST(request : Request) {
       error: error
     }), { status: 500 });
   }
+}
+
+
+export async function GET(request : Request) {
+
+  return Response.json({ message : "This method not found" });
 }

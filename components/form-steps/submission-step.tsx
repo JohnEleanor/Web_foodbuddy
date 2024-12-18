@@ -63,6 +63,8 @@ export function SubmissionStep({ formData, updateFormData, errors }: submission)
         activityFactor = 1.2; // Default to sedentary if activity level is not specified
     }
 
+
+
     // Calculate total daily caloric needs
     let calories = Math.round(BMR * activityFactor);
     console.log("TDEE", calories)
@@ -73,11 +75,10 @@ export function SubmissionStep({ formData, updateFormData, errors }: submission)
     } else if (target === "เพิ่มน้ำหนัก") {
       calories += 500; // Add 500 calories to gain weight (1 lb per week)
     }
-    
+    console.log("update call/day", calories)
     return calories;
   }
 
-  const dailyCalories = calculateCaloriesPerDay(age, weight, height, gender, lifestyle, target);
 
   return (
     <div className="space-y-4">
@@ -92,7 +93,7 @@ export function SubmissionStep({ formData, updateFormData, errors }: submission)
         <p><strong>เป้าหมาย :</strong> {getTargetLabel(target)}</p>
         <p><strong>ไลฟ์สไตล์ :</strong> {getLifestyleLabel(lifestyle)}</p>
         <p><strong>เป้าหมายน้ำหนัก :</strong> {formData.target_weight} กิโลกรัม</p>
-        <p><strong>แคลอรี่ที่ต้องการต่อวัน :</strong> {dailyCalories} kcal.</p>
+        <p><strong>แคลอรี่ที่ต้องการต่อวัน :</strong> {calculateCaloriesPerDay(formData.age, formData.weight, formData.height, formData.gender,formData.lifestyle, formData.target )} kcal.</p>
       </div>
       
       <div>

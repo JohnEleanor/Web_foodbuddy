@@ -17,6 +17,7 @@ import LoginImage from "./assets/login_img.png";
 import { Loader2 } from "lucide-react"
 
 // ? Pages
+import { toast } from 'sonner'
 
 const initLiff = async () => {
   try {
@@ -47,18 +48,30 @@ export default function Home() {
         const userProfile = await liff.getProfile(); // รอจนกว่าจะได้ข้อมูล
         const encodedData = JSON.stringify(userProfile);
         localStorage.setItem("Jay:userData", encodedData);
-        
-        
+        const _userData = localStorage.getItem("Jay:userData");
+        if (_userData) {
+         
+            const userData = JSON.parse(_userData);
+            const result = await fetch(`/api/users/${userData.userId}`);
+            const response = await result.json();
+            if (response.message == "User found" && response.status == 200){
+              setIsLoading(false)
+              router.push('/dashboard');
+              toast.success("เข้าสู่ระบบสำเร็จ");
+            }else {
+              setIsLoading(false)
+              toast.info("กรุณาลงทะเบียนข้อมูลของคุณ")
+              router.push('/register');
+            }
+         
+          
+        }
       }
     } catch (error) {
       console.error("Login failed:", error);
-    } finally {
-      setTimeout(() =>{
-        setIsLoading(false); // การโหลดเสร็จสิ้นเมื่อทุกอย่างเสร็จสมบูรณ์
-      },1000)
-      // ส่งข้อมูลไปที่หน้า /register
-      router.push('/register');
+      toast.error("เข้าสู่ระบบไม่สำเร็จ")
     }
+   
 };
 
 

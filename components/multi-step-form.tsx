@@ -26,7 +26,8 @@ import {
 } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { useToast } from "@/hooks/use-toast";
+// import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { useRouter } from 'next/navigation';
 const steps = [
   { title: "ข้อมูลส่วนตัว", component: PersonalInfoStep }, // case 0
@@ -50,7 +51,7 @@ export function MultiStepForm() {
   // const [userData, setUserData] = useState<UserData | null>(null);
 
 
-  const { toast } = useToast();
+  // const { toast } = useToast();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
@@ -150,70 +151,158 @@ export function MultiStepForm() {
     return stepErrors;
   };
 
-  const fetchData = async () => {
-    console.log(formData);
-    try {
-      const response = await fetch(`/api/users`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userName : formData.name,
-          age : formData.age,
-          weight : formData.weight,
-          height : formData.height,
-          gender : formData.gender,
-          bmi : formData.bmi,
-          lifestyle : formData.lifestyle,
-          target : formData.target,
-          targetWeight : formData.target_weight,
-          disease : formData.disease,
-          userFoodAllery : formData.foodallery,
-          displayName : formData.displayName,
-          lineUserId : formData.userId,
-          pictureUrl : formData.pictureUrl
-        }),
-      });
-      const data = await response.json();
-      console.log("Data saved successfully:", data);
-      return data;
-    } catch (error) {
-      console.error("Failed to save data:", error);
-      return null;
+  
+  function calculateCaloriesPerDay(age: number, weight: number, height: number, gender: string, lifestyle: string, target: string): number {
+    let BMR: number;
+
+    // Mifflin-St Jeor Equation for BMR calculation
+    if (gender === "male") {
+      BMR = 66 + (13.7 * weight) + (5 * height) - (6.8 * age);
+    } else {
+      BMR = 665 + (9.6 * weight) + (1.8 * height) - (4.7 * age);
     }
+
+    BMR = Math.round(BMR);
+    console.log(BMR)
+
+    // Adjust BMR based on activity level
+    let activityFactor: number;
+
+    switch (lifestyle) {
+      case "sedentary":
+        activityFactor = 1.2;
+        break;
+      case "light":
+        activityFactor = 1.375;
+        break;
+      case "moderate":
+        activityFactor = 1.55;
+        break;
+      case "active":
+        activityFactor = 1.725;
+        break;
+      case "intense":
+        activityFactor = 1.9;
+        break;
+      default:
+        activityFactor = 1.2; // Default to sedentary if activity level is not specified
+    }
+
+    let calories = Math.round(BMR * activityFactor);
+
+    if (target === "ลดน้ำหนัก") {
+      calories -= 500; // Reduce 500 calories to lose weight (1 lb per week)
+    } else if (target === "เพิ่มน้ำหนัก") {
+      calories += 500; // Add 500 calories to gain weight (1 lb per week)
+    }
+    return calories;
   }
+
+  // const fetchData = async () => {
+  //   console.log(formData);
+  //   try {
+  //     const response = await fetch(`/api/users`, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         userName : formData.name,
+  //         age : formData.age,
+  //         weight : formData.weight,
+  //         height : formData.height,
+  //         gender : formData.gender,
+  //         bmi : formData.bmi,
+  //         lifestyle : formData.lifestyle,
+  //         target : formData.target,
+  //         targetWeight : formData.target_weight,
+  //         disease : formData.disease,
+  //         userFoodAllery : formData.foodallery,
+  //         displayName : formData.displayName,
+  //         lineUserId : formData.userId,
+  //         pictureUrl : formData.pictureUrl,
+  //         dailyCalories : calculateCaloriesPerDay(
+  //           Number(formData.age), 
+  //           Number(formData.weight), 
+  //           Number(formData.height), 
+  //           String(formData.gender), 
+  //           String(formData.lifestyle), 
+  //           String(formData.target)),
+  //       }),
+  //     });
+  //     const data = await response.json();
+  //     return data;
+  //   } catch (error) {
+      
+  //     return error;
+  //   }
+  // }
+  const promise = async () => {
+    console.log("Form Data:", formData);
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    // Make API call
+    const response = await fetch(`/api/users`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userName: formData.name,
+        age: formData.age,
+        weight: formData.weight,
+        height: formData.height,
+        gender: formData.gender,
+        bmi: formData.bmi,
+        lifestyle: formData.lifestyle,
+        target: formData.target,
+        targetWeight: formData.target_weight,
+        disease: formData.disease,
+        userFoodAllery: formData.foodallery,
+        displayName: formData.displayName,
+        lineUserId: formData.userId,
+        pictureUrl: formData.pictureUrl,
+        dailyCalories: calculateCaloriesPerDay(
+          Number(formData.age),
+          Number(formData.weight),
+          Number(formData.height),
+          String(formData.gender),
+          String(formData.lifestyle),
+          String(formData.target)
+        ),
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(
+        `Failed to save data: ${response.status} ${response.statusText}`
+      );
+    }
+
+    const data = await response.json();
+    return data;
+  };
+
+ 
+
+  
 
   const handleConfirm = async () => {
     if (termsAccepted) {
       setIsDialogOpen(false);
-      // toast({
-      //   title: "ข้อมูลถูกบันทึกเรียบร้อยแล้ว",
-      //   description: 
-      //   <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-      //     <code className="text-white">{JSON.stringify(formData, null, 2)}</code>
-      //   </pre>,
-      // });
-      // console.log(formData);
+    
+     // Use toast.promise
+    toast.promise(promise(), {
+      loading: "กำลังบันทึกข้อมูล",
+      success: () => {
+        router.push('dashboard');
+        return "ลงทะเบียนสำเร็จ";
+      },
+      error: "เกิดข้อผิดพลาดในการลงทะเบียน",
+    });
 
-      const result = await fetchData();
-      if (result.status == 200) {
-        toast({title: "บันทึกข้อมูลสำเร็จ", description: "ข้อมูลของคุณถูกบันทึกเรียบร้อยแล้วเรากำลังพาคุณไปยังหน้า Dashboard"});
-        router.push("/dashboard")
-      }else {
-        toast({
-          title: "เกิดข้อผิดพลาดในการบันทึกข้อมูล",
-          description : "กรุณาลองใหม่อีกครั้ง",
-        })
-      }
-
-      // 
+     
     } else {
-      toast({
-        title: "กรุณายอมรับข้อกำหนดและเงื่อนไข",
-        description: "คุณต้องยอมรับข้อกำหนดและเงื่อนไขก่อนดำเนินการต่อ",
-        variant: "destructive",
-      });
+      toast.error("กรุณายอมรับข้อกำหนดและเงื่อนไข");
     }
   };
 

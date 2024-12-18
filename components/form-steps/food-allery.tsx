@@ -2,6 +2,7 @@
 import { Textarea } from "@/components/ui/textarea"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
+import { useEffect } from "react"
 
 const foodOptions = [
   "ถั่ว",
@@ -24,6 +25,10 @@ export function foodAllery({ formData, updateFormData, errors }: Foodallery) {
       : [...formData.foodallery, option]
     updateFormData({ foodallery: updatedPreferences })
   }
+
+  
+
+
 
   return (
     <div className="space-y-4">
