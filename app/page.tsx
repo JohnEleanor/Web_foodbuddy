@@ -60,16 +60,20 @@ export default function Home() {
               toast.success("เข้าสู่ระบบสำเร็จ");
             }else {
               setIsLoading(false)
-              toast.info("กรุณาลงทะเบียนข้อมูลของคุณ")
               router.push('/register');
+              toast.info("กรุณาลงทะเบียนข้อมูลของคุณ")
             }
          
           
+        } else {
+          console.error("User data not found");
+          toast.error("เกิดข้อผิดพลาดเข้าสู่ระบบไม่สำเร็จ")
+          setIsLoading(false)
         }
       }
     } catch (error) {
       console.error("Login failed:", error);
-      toast.error("เกิดข้อผิดพลาดเข้าสู่ระบบไม่สำเร็จ")
+      toast.error("เกิดข้อผิดพลาดเข้าสู่ระบบไม่สำเร็จ ")
       setIsLoading(false)
     }
    
