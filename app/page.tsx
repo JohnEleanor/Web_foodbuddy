@@ -69,7 +69,8 @@ export default function Home() {
       }
     } catch (error) {
       console.error("Login failed:", error);
-      toast.error("เข้าสู่ระบบไม่สำเร็จ")
+      toast.error("เกิดข้อผิดพลาดเข้าสู่ระบบไม่สำเร็จ")
+      setIsLoading(false)
     }
    
 };

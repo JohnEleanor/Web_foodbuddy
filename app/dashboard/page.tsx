@@ -7,40 +7,13 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { ModeToggle } from "@/components/theme-switcher";
-import { Label } from "@/components/ui/label";
-import { TrendingUp } from "lucide-react";
-import { PolarRadiusAxis, RadialBar, RadialBarChart } from "recharts"; // ใช้ recharts สำหรับการวาดกราฟ
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
+import { CaltoDay } from "@/components/dashboard/calories-to-day";
+import { Nutrients } from "@/components/dashboard/nutrients";
 // ?  Librarie
 
-// ? Data
-const chartData = [{ month: "january", desktop: 1260, mobile: 570 }];
-const chartConfig = {
-  desktop: {
-    label: "Desktop",
-    color: "hsl(var(--chart-1))",
-  },
-  mobile: {
-    label: "Mobile",
-    color: "hsl(var(--chart-2))",
-  },
-} satisfies ChartConfig;
 
 export default function Page() {
-  const totalVisitors = chartData[0].desktop + chartData[0].mobile;
+  
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -55,18 +28,20 @@ export default function Page() {
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-            <div className="aspect-video rounded-xl bg-muted/50">
-            <div className="px-6 py-6">b</div>
+          {/* Responsive Grid Layout */}
+          <div className="grid gap-4 gird-cols-3 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="col-span-2 lg:col-span-1">
+              <CaltoDay />
             </div>
-            <div className="aspect-video rounded-xl bg-muted/50">
-              <div className="px-6 py-6">b</div>
-            </div>
-            <div className="aspect-video rounded-xl bg-muted/50">
-              <div className="px-6 py-6">c</div>
+            <div className="col-span-2 lg:col-span-2 ">
+              <Nutrients />
             </div>
           </div>
-          <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
+          {/* Background Section */}
+          <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min">
+            <div>
+            </div>
+          </div>
         </div>
       </SidebarInset>
     </SidebarProvider>
