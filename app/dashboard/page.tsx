@@ -12,7 +12,7 @@ import { Nutrients } from "@/components/dashboard/nutrients";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { useRouter } from 'next/navigation';
-import { Skeleton } from "@/components/ui/skeleton"
+
 // ?  Librarie
 
 
@@ -28,11 +28,22 @@ export default function Page() {
         if (_userData) {
           const userData = JSON.parse(_userData);
           const data = await fetch(`/api/users/${userData.userId}`)
-          const result = await data.json();
-          if (result.message == "User found" && result.status == 200){
-            setUserData(result.data);
-            setIsLoading(false)
+          // console.log(data.status)
+          if (data.status == 200){
+            const result = await data.json();
+            if (result.message == "User found" && result.status == 200){
+              setUserData(result.data);
+              setIsLoading(false)
+            }else {
+              toast.error(result.message +" Status : "+ result.status.toString())
+              router.push('/');
+            }
+          }else {
+            console.log("Error")
+            toast.error("Server error")
+            router.push('/');
           }
+            
          
         }else {
           toast.error("User data not found")
@@ -68,10 +79,26 @@ export default function Page() {
             <ModeToggle />
           </div>
         </header>
-        
+
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          {/* Responsive Grid Layout */}
-          <div className="grid gap-4 gird-cols-3 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid auto-rows-min gap-4 md:grid-cols-3">
+            
+            <div>
+              <CaltoDay />
+            </div>
+            <div className="col-span-1 lg:col-span-2 md:col-span-2 ">
+              <Nutrients />
+            </div>
+            
+          </div>
+          <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/100 md:min-h-min">
+         
+          </div>
+          
+        </div>
+        
+        {/* <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+          <div className="grid auto-rows-min gap-4 md:grid-cols-3">
             <div className="col-span-2 lg:col-span-1">
               <CaltoDay />
             </div>
@@ -79,7 +106,6 @@ export default function Page() {
               <Nutrients />
             </div>
           </div>
-          {/* Background Section */}
           <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min">
             <div>
             {isLoading && (
@@ -116,7 +142,7 @@ export default function Page() {
           ))}
             </div>
           </div>
-        </div>
+        </div> */}
       </SidebarInset>
     </SidebarProvider>
   );

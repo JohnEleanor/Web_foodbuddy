@@ -18,6 +18,9 @@ import {
 } from "@/components/ui/chart"
 
 const chartConfig = {
+  views : {
+    label : "กรัม/วัน",
+  },
   move: {
     label: "ไขมัน",
     color: "hsl(var(--chart-1))",
@@ -36,22 +39,19 @@ const chartConfig = {
 const chartData = [
   {
     activity: "stand",
-    กรัม: 1 * 100,
-    unit : "กรัม",
+    cal: 1 * 100,
     label: "",
     fill: "var(--color-stand)",
   },
   {
     activity: "exercise",
-    กรัม: 12,
-    unit : "กรัม",
+    cal: 12,
     label: "",
     fill: "var(--color-exercise)",
   },
   {
     activity: "move",
-    กรัม: 49,
-    unit : "กรัม",
+    cal: 49,
     label: "",
     fill: "var(--color-move)",
   },
@@ -60,7 +60,7 @@ const chartData = [
 export function Nutrients() {
   return (
     <>
-        <Card className="max-w-full">
+        <Card>
           <CardHeader>
             <CardTitle className="text-center text-xl font-bold">สารอาหารวันนี้</CardTitle>
           </CardHeader>
@@ -94,15 +94,20 @@ export function Nutrients() {
                     }
                   />
                  
-                  <XAxis type="number" dataKey="กรัม" hide  />
+                  <XAxis type="number" dataKey="cal" hide  />
                   <ChartTooltip
                     cursor={false}
-                    content={<ChartTooltipContent  indicator="line" />}
+                    content={
+                    <ChartTooltipContent  
+                      indicator="line"
+                      nameKey="views"
+                      />
+                    }
                   />
                   
                  
 
-                  <Bar dataKey="กรัม" radius={5}>
+                  <Bar dataKey="cal" radius={5}>
                     <LabelList
                       position="insideLeft"
                       dataKey="label"

@@ -54,15 +54,22 @@ export default function Home() {
             const userData = JSON.parse(_userData);
             const result = await fetch(`/api/users/${userData.userId}`);
             const response = await result.json();
-            if (response.message == "User found" && response.status == 200){
+            console.log(response)
+            if (response.message == "Internal server error") {
               setIsLoading(false)
-              router.push('/dashboard');
-              toast.success("เข้าสู่ระบบสำเร็จ");
+              toast.error("เกิดข้อผิดพลาดเข้าสู่ระบบไม่สำเร็จ : " + response.message)
             }else {
-              setIsLoading(false)
-              router.push('/register');
-              toast.info("กรุณาลงทะเบียนข้อมูลของคุณ")
+              if (response.message == "User found" && response.status == 200){
+                setIsLoading(false)
+                router.push('/dashboard');
+                toast.success("เข้าสู่ระบบสำเร็จ");
+              }else {
+                setIsLoading(false)
+                router.push('/register');
+                toast.info("กรุณาลงทะเบียนข้อมูลของคุณ")
+              }
             }
+            
          
           
         } else {

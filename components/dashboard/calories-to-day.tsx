@@ -22,7 +22,7 @@ import { Separator } from "@/components/ui/separator";
 
 
 const chartData = [
-  { browser: "safari", visitors: 1500, fill: "var(--color-safari)" },
+  { browser: "safari", visitors: 26, fill: "var(--color-safari)" },
 ]
 const chartConfig = {
   visitors: {
@@ -50,7 +50,7 @@ export function CaltoDay() {
         <CardContent className="py-8">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto  max-h-[180px]"
+          className="mx-auto  max-h-[180px] w-full h-[180px] sm:h-[200px] md:h-[220px] lg:h-[240px]"
         >
           <RadialBarChart
             data={chartData}
@@ -87,7 +87,7 @@ export function CaltoDay() {
                         </tspan>
                         <tspan
                           x={viewBox.cx}
-                          y={(viewBox.cy || 0) + 24}
+                          y={(viewBox.cy || 0) + 30}
                           className="fill-muted-foreground"
                         >
                           กิโลแคลอรี่

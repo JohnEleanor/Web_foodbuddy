@@ -1,7 +1,8 @@
-import connection from "@/app/db/database";
+import connectToDatabase from "@/app/db/database";
 
 export async function GET() {
     try {
+        const connection = await connectToDatabase();
         const [results, fields] = await connection.execute("SELECT * FROM users");
         console.log(results);
     } catch (error) {
