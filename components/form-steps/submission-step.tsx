@@ -86,41 +86,6 @@ export function SubmissionStep({ formData, updateFormData, errors }: submission)
 
 
   return (
-    // <div className="space-y-4">
-    //   <h3 className="font-semibold">ตรวจสอบข้อมูลของคุณ</h3>
-    //   <div>
-    //     <p><strong>ชื่อ :</strong> {formData.name}</p>
-    //     <p><strong>อายุ :</strong> {age}</p>
-    //     {gender === "male" ? <p><strong>เพศ :</strong> ชาย</p> : <p><strong>เพศ :</strong> หญิง</p>}
-    //     <p><strong>น้ำหนัก :</strong> {weight} กิโลกรัม</p>
-    //     <p><strong>ส่วนสูง :</strong> {height} เซนติเมตร</p>
-    //     <p><strong>BMI :</strong> {formData.bmi}</p>
-    //     <p><strong>เป้าหมาย :</strong> {getTargetLabel(target)}</p>
-    //     <p><strong>ไลฟ์สไตล์ :</strong> {getLifestyleLabel(lifestyle)}</p>
-    //     <p><strong>เป้าหมายน้ำหนัก :</strong> {formData.target_weight} กิโลกรัม</p>
-    //     <p><strong>แคลอรี่ที่ต้องการต่อวัน :</strong> {calculateCaloriesPerDay(formData.age, formData.weight, formData.height, formData.gender,formData.lifestyle, formData.target )} kcal.</p>
-    //   </div>
-      
-    //   <div>
-    //     <p><strong>โรคประจำตัว</strong></p>
-    //     <ul className="list-disc list-inside">
-    //       {formData.disease.map((disease: any) => (
-    //         <li key={disease}>{disease}</li>
-    //       ))}
-    //     </ul>
-    //     {formData.disease_other && <p>โรคประจำตัวอื่นๆ : {formData.disease_other}</p>}
-    //   </div>
-
-    //   <div>
-    //     <p><strong>เเพ้อาหาร</strong></p>
-    //     <ul className="list-disc list-inside">
-    //       {formData.foodallery.map((foodallery: any) => (
-    //         <li key={foodallery}>{foodallery}</li>
-    //       ))}
-    //     </ul>
-    //     {formData.foodallery_other && <p>อาหารที่เเพ้อื่นๆ : {formData.foodallery_other}</p>}
-    //   </div>
-    // </div>
     <Card className="w-full max-w-3xl mx-auto">
       <CardHeader>
         <div className="flex items-center space-x-4">
@@ -135,7 +100,7 @@ export function SubmissionStep({ formData, updateFormData, errors }: submission)
         </div>
       </CardHeader>
       <CardContent>
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid gap-4 md:grid-cols-1">
           <div className="space-y-2">
             <div className="flex items-center space-x-2">
               <User className="w-4 h-4 text-muted-foreground" />
@@ -157,15 +122,23 @@ export function SubmissionStep({ formData, updateFormData, errors }: submission)
             </div>
             <div className="flex items-center space-x-2">
               <Activity className="w-4 h-4 text-muted-foreground" />
-              <span>ไลฟ์สไตล์: {formData.lifestyle}</span>
+              <span>ไลฟ์สไตล์: {getLifestyleLabel(formData.lifestyle)}</span>
             </div>
             <div className="flex items-center space-x-2">
               <AlertCircle className="w-4 h-4 text-muted-foreground" />
               <span>โรคประจำตัว: {formData.disease || formData.disease_other || ""}</span>
             </div>
             <div className="flex items-center space-x-2">
+              <AlertCircle className="w-4 h-4 text-muted-foreground" />
+              <span>โรคประจำตัวอื่น: {formData.disease_other || "ไม่มี"}</span>
+            </div>
+            <div className="flex items-center space-x-2">
               <Apple className="w-4 h-4 text-muted-foreground" />
               <span>แพ้อาหาร: {formData.foodallery || formData.foodallery_other ||  'ไม่มี'}</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Apple className="w-4 h-4 text-muted-foreground" />
+              <span>แพ้อาหารอื่นๆ: {formData.foodallery_other ||  'ไม่มี'}</span>
             </div>
           </div>
         </div>

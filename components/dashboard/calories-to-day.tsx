@@ -101,9 +101,9 @@ export function CaltoDay() {
           </RadialBarChart>
         </ChartContainer>
         </CardContent>
-        <CardFooter className="">
-          <div className="flex w-full items-center  pt-2">
-          <Separator orientation="vertical" className="mx-4 h-10 w-px" />
+        <CardFooter className="w-full">
+          <div className="flex w-full justify-center items-center  pt-2">
+          {/* <Separator orientation="vertical" className="mx-4 h-10 w-px" /> */}
             <div className="flex w-full items-center  ">
               <div className="grid flex-1">
                 <div className="text-xs text-muted-foreground">เคลอรี่วันนี้</div>

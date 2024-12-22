@@ -21,7 +21,7 @@ export default function RootLayout({
             attribute="class"
             defaultTheme="light"
           >
-            <Toaster richColors />
+            <Toaster richColors closeButton />
             {children}
           </ThemeProvider>
       </body>

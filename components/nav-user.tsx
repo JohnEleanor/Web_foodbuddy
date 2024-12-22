@@ -3,6 +3,7 @@
 import {
   BadgeCheck,
   Bell,
+  Settings,
   ChevronsUpDown,
   CreditCard,
   LogOut,
@@ -29,11 +30,14 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+import { useRouter } from 'next/navigation';
+import { toast } from "sonner"
 
 
 
 export function NavUser({ user } : any) {
-
+  const route = useRouter();
+  console.log(user)
   const { isMobile } = useSidebar()
 
   return (
@@ -46,12 +50,12 @@ export function NavUser({ user } : any) {
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user.pictureUrl} alt={user.name} />
+                <AvatarImage src={user.user_pictureUrl} alt={user.user_name} />
                 <AvatarFallback className="rounded-lg">CN</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{user.name}</span>
-                <span className="truncate text-xs">{user.email}</span>
+                <span className="truncate font-semibold">{user.user_name}</span>
+                <span className="truncate text-xs">{user.user_displayName}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
@@ -65,41 +69,47 @@ export function NavUser({ user } : any) {
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user.avatar} alt={user.name} />
+                  <AvatarImage src={user.user_pictureUrl} alt={user.user_name} />
                   <AvatarFallback className="rounded-lg">CN</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">{user.name}</span>
-                  <span className="truncate text-xs">{user.email}</span>
+                  <span className="truncate font-semibold">{user.user_name}</span>
+                  <span className="truncate text-xs">{user.user_displayName}</span>
                 </div>
               </div>
             </DropdownMenuLabel>
-            <DropdownMenuSeparator />
+            {/* <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
                 <Sparkles />
                 Upgrade to Pro
               </DropdownMenuItem>
             </DropdownMenuGroup>
+            <DropdownMenuSeparator /> */}
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
-                <BadgeCheck />
-                Account
+                <Settings />
+                ตั้งค่าบัญชี
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              {/* <DropdownMenuItem>
                 <CreditCard />
                 Billing
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Bell />
                 Notifications
-              </DropdownMenuItem>
+              </DropdownMenuItem> */}
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => {
+              console.log("Log out")
+              localStorage.removeItem("Jay:userData")
+              route.push('/')
+              toast.success("ออกจากระบบสำเร็จ")
+            }}>
               <LogOut />
-              Log out
+              ออกจากระบบ
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

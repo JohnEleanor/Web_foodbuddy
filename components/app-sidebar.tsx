@@ -24,10 +24,9 @@ import {
 
 const data = {
   user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "https://github.com/shadcn.png",
-   
+    // name: "shadcn",
+    // email: "m@example.com",
+    // avatar: "https://github.com/shadcn.png",
   },
   teams: [
    
@@ -99,7 +98,12 @@ const data = {
   ],
 }
 
-export function AppSidebar({ userData, ...props }: { userData: any } & React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({ userData, ...props }: {userData : any} & React.ComponentProps<typeof Sidebar>) {
+  if (userData.length <= 0){
+    console.log("User data not found")
+  }else {
+    data.user = { ...data.user, ...userData[0] }
+  }
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -109,7 +113,7 @@ export function AppSidebar({ userData, ...props }: { userData: any } & React.Com
         <NavMain items={data.navMain} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={userData} />
+        <NavUser user={data.user} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
