@@ -43,10 +43,10 @@ const initialData = {
       icon: History,
       isActive: false,
       items: [
-        {
-          title: "ประวัติการกิน",
-          url: "/dashboard/history",
-        },
+        // {
+        //   title: "ประวัติการกิน",
+        //   url: "/dashboard/history",
+        // },
         {
           title: "ประวัติการกินทั้งหมด",
           url: "/dashboard/history/history_all",
