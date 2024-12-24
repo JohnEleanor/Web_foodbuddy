@@ -3,7 +3,7 @@ import connectToDatabase from "@/app/db/database";
 export async function POST(request : Request) {
   try {
     const connection = await connectToDatabase();
-    console.log("Connect : ",connection)
+    // console.log("Connect : ",connection)
     const body = await request.json();
     const {
       userName, age, weight, height, gender, bmi, lifestyle,

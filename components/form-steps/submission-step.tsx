@@ -43,7 +43,7 @@ export function SubmissionStep({ formData, updateFormData, errors }: submission)
     }
 
     BMR = Math.round(BMR);
-    console.log(BMR)
+    // console.log(BMR)
 
     // Adjust BMR based on activity level
     let activityFactor: number;
@@ -72,15 +72,15 @@ export function SubmissionStep({ formData, updateFormData, errors }: submission)
 
     // Calculate total daily caloric needs
     let calories = Math.round(BMR * activityFactor);
-    console.log("TDEE", calories)
+    // console.log("TDEE", calories)
     // Adjust based on target weight
-    console.log(target)
+    // console.log(target)
     if (target === "ลดน้ำหนัก") {
       calories -= 500; // Reduce 500 calories to lose weight (1 lb per week)
     } else if (target === "เพิ่มน้ำหนัก") {
       calories += 500; // Add 500 calories to gain weight (1 lb per week)
     }
-    console.log("update call/day", calories)
+    // console.log("update call/day", calories)
     return calories;
   }
 

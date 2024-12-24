@@ -39,11 +39,6 @@ const steps = [
   { title: "ยืนยันข้อมูล", component: SubmissionStep }, // case 4
 ];
 
-interface UserData {
-  userId: string;
-  displayName: string;
-  pictureUrl: string;
-}
 
 
 export function MultiStepForm() {
@@ -163,7 +158,7 @@ export function MultiStepForm() {
     }
 
     BMR = Math.round(BMR);
-    console.log(BMR)
+    // console.log(BMR)
 
     // Adjust BMR based on activity level
     let activityFactor: number;
@@ -198,47 +193,7 @@ export function MultiStepForm() {
     return calories;
   }
 
-  // const fetchData = async () => {
-  //   console.log(formData);
-  //   try {
-  //     const response = await fetch(`/api/users`, {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         userName : formData.name,
-  //         age : formData.age,
-  //         weight : formData.weight,
-  //         height : formData.height,
-  //         gender : formData.gender,
-  //         bmi : formData.bmi,
-  //         lifestyle : formData.lifestyle,
-  //         target : formData.target,
-  //         targetWeight : formData.target_weight,
-  //         disease : formData.disease,
-  //         userFoodAllery : formData.foodallery,
-  //         displayName : formData.displayName,
-  //         lineUserId : formData.userId,
-  //         pictureUrl : formData.pictureUrl,
-  //         dailyCalories : calculateCaloriesPerDay(
-  //           Number(formData.age), 
-  //           Number(formData.weight), 
-  //           Number(formData.height), 
-  //           String(formData.gender), 
-  //           String(formData.lifestyle), 
-  //           String(formData.target)),
-  //       }),
-  //     });
-  //     const data = await response.json();
-  //     return data;
-  //   } catch (error) {
-      
-  //     return error;
-  //   }
-  // }
   const promise = async () => {
-    console.log("Form Data:", formData);
     await new Promise((resolve) => setTimeout(resolve, 1500));
     // Make API call
     const response = await fetch(`/api/users`, {

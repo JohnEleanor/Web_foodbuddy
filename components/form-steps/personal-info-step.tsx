@@ -48,7 +48,7 @@ export function PersonalInfoStep({ formData, updateFormData, errors }: PersonalI
     if (weight > 0 && height > 0) {
       const heightInMeters = height / 100;
       const cal_bmi = weight / (heightInMeters * heightInMeters)
-      console.log(cal_bmi)
+      // console.log(cal_bmi)
       updateFormData({ bmi: parseFloat(cal_bmi.toFixed(2)) });
       return weight / (heightInMeters * heightInMeters);
     }

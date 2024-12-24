@@ -1,6 +1,5 @@
 
 import { Toaster } from "@/components/ui/toaster"
-// import { Toaster } from 'sonner'
 
 export default function RegisterLayout({
     children, // will be a page or nested layout
@@ -9,7 +8,7 @@ export default function RegisterLayout({
   }) {
     return (
         <>
-         <Toaster />
+        <Toaster />
         {children}
         </>
     )

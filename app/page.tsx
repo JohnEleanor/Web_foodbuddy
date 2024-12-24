@@ -54,7 +54,7 @@ export default function Home() {
             const userData = JSON.parse(_userData);
             const result = await fetch(`/api/users/${userData.userId}`);
             const response = await result.json();
-            console.log(response)
+            // console.log(response)
             if (response.message == "Internal server error") {
               setIsLoading(false)
               toast.error("เกิดข้อผิดพลาดเข้าสู่ระบบไม่สำเร็จ : " + response.message)

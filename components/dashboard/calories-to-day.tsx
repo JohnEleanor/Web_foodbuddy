@@ -18,12 +18,8 @@ import {
   RadialBarChart,
 } from "recharts"
 import { ChartConfig, ChartContainer } from "@/components/ui/chart"
-import { Separator } from "@/components/ui/separator";
 
 
-const chartData = [
-  { browser: "safari", visitors: 26, fill: "var(--color-safari)" },
-]
 const chartConfig = {
   visitors: {
     label: "Visitors",
@@ -36,17 +32,13 @@ const chartConfig = {
 
 
 export function CaltoDay() {
+  const chartData = [
+    { browser: "safari", visitors: 26, fill: "var(--color-safari)" },
+  ]
   return (
     <>
       <Card className="max-w-full md:max-w-lg lg:max-w-xl h-full rounded-lg">
-        {/* <CardHeader className="text-center">
-          <CardTitle className="text-lg font-bold md:text-xl lg:text-2xl">
-            เคลอรี่วันนี้
-          </CardTitle>
-          <CardDescription className="text-sm md:text-base text-gray-600">
-            Card Description
-          </CardDescription>
-        </CardHeader> */}
+     
         <CardContent className="py-8">
         <ChartContainer
           config={chartConfig}

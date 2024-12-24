@@ -1,77 +1,74 @@
 import {
-    Table,
-    TableBody,
-    TableCaption,
-    TableCell,
-    TableFooter,
-    TableHead,
-    TableHeader,
-    TableRow,
-  } from "@/components/ui/table"
-  import { useState } from "react"
-  import { Input } from "@/components/ui/input"
-  import { Label } from "@/components/ui/label"
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
+import { useState } from "react"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+
+const invoices = [
+  {
+    time: "12:00",
+    type: "ของคาว",
+    calories: "250",
+    manuName: "ผัดกระเพา",
+  },
+  {
+    time: "11:00",
+    type: "ของคาว",
+    calories: "150",
+    manuName: "ขาไก่",
+  },
+  {
+    time: "06:00",
+    type: "ของกินเล่น",
+    calories: "350",
+    manuName: "หมูปิ้ง",
+  },
+  {
+    time: "00:00",
+    type: "ของหวาน",
+    calories: "450",
+    manuName: "เค้ก",
+  },
+  {
+    time: "12:00",
+    type: "ของคาว",
+    calories: "550",
+    manuName: "ผัดกระเพา",
+  },
+]
+
+export function HistoryEat() {
+  const [searchTerm, setSearchTerm] = useState("")
+  const [filterType, setFilterType] = useState<"all" | "ของคาว" | "ของหวาน" | "ของกินเล่น">("all")
   
-  const invoices = [
-    {
-      invoice: "INV001",
-      paymentStatus: "Paid",
-      totalAmount: "250 ",
-      paymentMethod: "Credit Card",
-    },
-    {
-      invoice: "INV002",
-      paymentStatus: "Pending",
-      totalAmount: "150 ",
-      paymentMethod: "PayPal",
-    },
-    {
-      invoice: "INV003",
-      paymentStatus: "Unpaid",
-      totalAmount: "350 ",
-      paymentMethod: "Bank Transfer",
-    },
-    {
-      invoice: "INV004",
-      paymentStatus: "Paid",
-      totalAmount: "450 ",
-      paymentMethod: "Credit Card",
-    },
-    {
-      invoice: "INV005",
-      paymentStatus: "Paid",
-      totalAmount: "550 ",
-      paymentMethod: "PayPal",
-    },
-    {
-      invoice: "INV006",
-      paymentStatus: "Pending",
-      totalAmount: "300 ",
-      paymentMethod: "Bank Transfer",
-    },
-    {
-      invoice: "INV007",
-      paymentStatus: "Unpaid",
-      totalAmount: "300 ",
-      paymentMethod: "Credit Card",
-    },
-   
-  ]
-  
-  export function HistoryEat() {
-    const [searchTerm, setSearchTerm] = useState("")
-  
-    const filteredInvoices = invoices.filter((invoice) =>
-      Object.values(invoice).some((value) =>
-        value.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    )
-  
-    return (
-      <div className="space-y-4">
-        <div className="text-xl font-bold">ประวัติการกิน วันนี้</div>
-        <div className="flex items-center space-x-2">
-          <Label htmlFor="search">ค้นหา </Label>
+  const filteredInvoices = invoices.filter((manuName) =>
+    (filterType === "all" || manuName.type === filterType) &&
+    (manuName.manuName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+     manuName.time.toLowerCase().includes(searchTerm.toLowerCase()) ||
+     manuName.calories.toLowerCase().includes(searchTerm.toLowerCase()))
+  )
+
+  return (
+    <div className="space-y-4">
+      <div className="text-xl font-bold">ประวัติการกิน วันนี้</div>
+      <div className="flex items-center space-x-4">
+        <div className="flex-1">
+          <Label htmlFor="search">ค้นหา</Label>
           <Input
             id="search"
             type="text"
@@ -80,37 +77,54 @@ import {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        <Table>
-          <TableCaption>A list of your recent invoices.</TableCaption>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-1/5 font-bold text-primary">เวลา</TableHead>
-              <TableHead className="font-bold text-primary">ประเภท</TableHead>
-              <TableHead className="font-bold text-primary">ชื่อเมนู</TableHead>
-              <TableHead className="text-right font-bold text-primary">จำนวนเเคลอรี่</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filteredInvoices.map((invoice) => (
-              <TableRow key={invoice.invoice}>
-                <TableCell className="">{invoice.invoice}</TableCell>
-                <TableCell>{invoice.paymentStatus}</TableCell>
-                <TableCell>{invoice.paymentMethod}</TableCell>
-                <TableCell className="text-right">{invoice.totalAmount} Kcal</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-          <TableFooter>
-            <TableRow>
-              <TableCell colSpan={3}>Total</TableCell>
-              <TableCell className="text-right">
-                ${filteredInvoices.reduce((total, invoice) => total + parseFloat(invoice.totalAmount.slice(1)), 0).toFixed(2)}
-              </TableCell>
-            </TableRow>
-          </TableFooter>
-        </Table>
+        <div className="w-[180px]">
+          <Label htmlFor="filter-type">ประเภทอาหาร</Label>
+          <Select
+            value={filterType}
+            onValueChange={(value: "all" | "ของคาว" | "ของหวาน" | "ของกินเล่น") => setFilterType(value)}
+          >
+            <SelectTrigger id="filter-type">
+              <SelectValue placeholder="เลือกประเภท" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">ทั้งหมด</SelectItem>
+              <SelectItem value="ของคาว">ของคาว</SelectItem>
+              <SelectItem value="ของหวาน">ของหวาน</SelectItem>
+              <SelectItem value="ของกินเล่น">ของกินเล่น</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
-    )
-  }
-  
-  
+      <Table>
+        <TableCaption>ประวัติการกินอาหารของคุณ</TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-1/5 font-bold text-primary">เวลา</TableHead>
+            <TableHead className="font-bold text-primary">ชื่อเมนู</TableHead>
+            <TableHead className="font-bold text-primary">ประเภท</TableHead>
+            <TableHead className="text-right font-bold text-primary">จำนวนเเคลอรี่</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {filteredInvoices.map((invoice, index) => (
+            <TableRow key={`${invoice.time}-${index}`}>
+              <TableCell className="">{invoice.time}</TableCell>
+              <TableCell>{invoice.manuName}</TableCell>
+              <TableCell>{invoice.type}</TableCell>
+              <TableCell className="text-right">{invoice.calories} Kcal</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+        <TableFooter>
+          <TableRow>
+            <TableCell colSpan={3}>Total</TableCell>
+            <TableCell className="text-right">
+              {filteredInvoices.reduce((total, invoice) => total + parseFloat(invoice.calories), 0).toFixed(2)} kcal
+            </TableCell>
+          </TableRow>
+        </TableFooter>
+      </Table>
+    </div>
+  )
+}
+

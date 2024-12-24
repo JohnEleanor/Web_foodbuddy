@@ -4,7 +4,6 @@ export async function GET() {
     try {
         const connection = await connectToDatabase();
         const [results, fields] = await connection.execute("SELECT * FROM users");
-        console.log(results);
     } catch (error) {
         console.error(error);
         return Response.json({ message: error });

@@ -13,7 +13,7 @@ async function connectToDatabase() {
     });
 
     // Test the connection
-    console.log('Connected to the database successfully!');
+    // console.log('Connected to the database successfully!');
     return connection;
   } catch (error) {
     console.error('Failed to connect to the database:', error.message);

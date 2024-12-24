@@ -32,12 +32,11 @@ import {
 } from "@/components/ui/sidebar"
 import { useRouter } from 'next/navigation';
 import { toast } from "sonner"
-
+import { Skeleton } from "@/components/ui/skeleton"
 
 
 export function NavUser({ user } : any) {
   const route = useRouter();
-  console.log(user)
   const { isMobile } = useSidebar()
 
   return (
@@ -51,7 +50,9 @@ export function NavUser({ user } : any) {
             >
               <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarImage src={user.user_pictureUrl} alt={user.user_name} />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                  <AvatarFallback>
+                      <Skeleton className="w-[100px] h-[200px] rounded-lg" />
+                  </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">{user.user_name}</span>
